@@ -1,4 +1,4 @@
-protein_id, organism_taxa_id, organism_clade_identifier, organism_scientific_name_("genus_species"), domain_description, domain_id, domain_start_coordinate, domain_end_coordinate, length_of_protein
+protein_id,organism_taxa_id,organism_clade_identifier,genus_species,domain_description,domain_id,domain_start_coordinate,domain_end_coordinate,length_of_protein
 A0A014PQC0,568076,E,Metarhizium robertsii,Glyceraldehyde 3-phosphate dehydrogenase catalytic domain,PF02800,157,314,338
 A0A016S8J7,53326,E,Ancylostoma ceylanicum,Peptidase C13 legumain,PF01650,40,94,101
 A0A016S8J7,53326,E,Ancylostoma ceylanicum,Neurotransmitter-gated ion-channel ligand-binding domain,PF02931,23,39,101

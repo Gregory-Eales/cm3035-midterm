@@ -1,4 +1,4 @@
-domain_pfam_ids, domain_pfam_family_description
+domain_id,domain_description
 CoiledCoil,coil prediction
 LowComplexity,low complexity prediction
 mobidb-lite,disorder prediction
