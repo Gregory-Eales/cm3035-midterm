@@ -6,7 +6,7 @@ from django.db import models
 
 
 class Organism(models.Model):
-    tax_id = models.IntegerField(primary_key=True)
+    taxa_id = models.IntegerField(primary_key=True)
     clade = models.TextField(blank=True)
     scientific_name = models.TextField()
 
