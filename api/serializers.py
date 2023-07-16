@@ -3,6 +3,43 @@ from rest_framework import serializers
 from .models import Protein, Domain, ProteinDomain, Organism, OrganismProtein
 
 
+class CreateProteinSerializer(serializers.Serializer):
+    protein_id = serializers.CharField(max_length=200)
+    sequence = serializers.CharField(style={'base_template': 'textarea.html'}, required=False)
+    length = serializers.IntegerField(required=False)
+    taxonomy = serializers.JSONField(required=False)
+    domains = serializers.ListField(child=serializers.DictField(), required=False)
+
+    def create(self, validated_data):
+        taxa_data = validated_data.pop('taxonomy', None)
+        domains_data = validated_data.pop('domains', None)
+
+        protein = Protein.objects.create(**validated_data)
+
+        if taxa_data:
+            organism, _ = Organism.objects.get_or_create(
+                taxa_id=taxa_data.get('taxa_id'),
+                defaults={'genus_species': f"{taxa_data.get('genus')} {taxa_data.get('species')}", 'clade_id': taxa_data.get('clade')}
+            )
+            OrganismProtein.objects.create(taxa_id=organism, protein_id=protein)
+
+        if domains_data:
+            for domain in domains_data:
+                pfam_data = domain.pop('pfam_id')
+                domain_instance, _ = Domain.objects.get_or_create(
+                    domain_id=pfam_data.get('domain_id'),
+                    defaults={'description': pfam_data.get('domain_description')}
+                )
+
+                ProteinDomain.objects.create(
+                    protein_id=protein, 
+                    domain_id=domain_instance,
+                    start_coordinate=domain.get('start'),
+                    end_coordinate=domain.get('stop')
+                )
+
+        return protein
+
 class ProteinSerializer(serializers.ModelSerializer):
     taxonomy = serializers.SerializerMethodField()
     domains = serializers.SerializerMethodField()

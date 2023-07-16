@@ -34,7 +34,6 @@ class Command(BaseCommand):
             }
         )
             
-
         # majority data is in dataset_df, not all records will have a sequence length
         # we do left join to keep all records that dont have protein sequence length
         protein_df = dataset_df[['protein_id', 'length_of_protein']].drop_duplicates()

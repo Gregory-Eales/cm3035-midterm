@@ -4,6 +4,52 @@ from .models import Protein, Domain, ProteinDomain, Organism, OrganismProtein
 from .serializers import ProteinSerializer, PfamSerializer
 from rest_framework import status
 from rest_framework.test import APIClient
+import json
+from rest_framework.test import APITestCase
+
+
+class TestCreateProteinView(APITestCase):
+    def setUp(self):
+        self.data = {
+            "protein_id": "A0A016S8J7",
+            "sequence": "MVIGVGFLLVLFSSSVLGILNAGVQLRIEELFDTPGHTNNWAVLVCTSRFWFNYRHVSNVLALYHTVKRLGIPDSNIILMLAEDVPCNPRNPRPEAAVLSA",
+            "taxonomy": {
+                "taxa_id": 53326,
+                "clade": "E",
+                "genus": "Ancylostoma",
+                "species": "ceylanicum"
+            },
+            "length": 101,
+            "domains": [
+                {
+                    "pfam_id": {
+                        "domain_id": "PF01650",
+                        "domain_description": "PeptidaseC13family"
+                    },
+                    "description": "Peptidase C13 legumain",
+                    "start": 40,
+                    "stop": 94
+                },
+                {
+                    "pfam_id": {
+                        "domain_id": "PF02931",
+                        "domain_description": "Neurotransmitter-gatedion-channelligandbindingdomain"
+                    },
+                    "description": "Neurotransmitter-gated ion-channel ligand-binding domain",
+                    "start": 23,
+                    "stop": 39
+                }
+            ]
+        }
+
+    def test_protein_creation(self):
+        response = self.client.post(reverse('protein'), self.data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Protein.objects.count(), 1)
+        self.assertEqual(Protein.objects.get().protein_id, 'A0A016S8J7')
+        self.assertEqual(Domain.objects.count(), 2)
+        self.assertEqual(Organism.objects.count(), 1)
+
 
 class ProteinAPITestCase(TestCase):
 

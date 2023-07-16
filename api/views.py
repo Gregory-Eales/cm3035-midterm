@@ -3,7 +3,7 @@
 from rest_framework import generics
 from .models import Protein, Domain, ProteinDomain, Organism, OrganismProtein
 from .serializers import (ProteinSerializer, OrganismProteinSerializer, CoverageSerializer,
-    PfamSerializer, ProteinDomainForOrganismSerializer)
+    PfamSerializer, ProteinDomainForOrganismSerializer, CreateProteinSerializer)
 from django.db.models import Sum, F
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 
 class CreateProteinView(generics.CreateAPIView):
     queryset = Protein.objects.all()
-    serializer_class = ProteinSerializer
+    serializer_class = CreateProteinSerializer
 
 
 class ProteinView(generics.RetrieveAPIView):
